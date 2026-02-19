@@ -268,12 +268,40 @@ PlasmoidItem {
                                 Layout.fillWidth: true
                                 spacing: Kirigami.Units.smallSpacing
                                 
-                                PlasmaComponents.Label {
-                                    text: modelData.homeTeam || "Home"
-                                    font.bold: true
+                                RowLayout {
+                                    spacing: Kirigami.Units.smallSpacing
+                                    Image {
+                                        source: modelData.homeLogo || ""
+                                        width: Kirigami.Units.iconSizes.small
+                                        height: Kirigami.Units.iconSizes.small
+                                        Layout.preferredWidth: Kirigami.Units.iconSizes.small
+                                        Layout.preferredHeight: Kirigami.Units.iconSizes.small
+                                        Layout.maximumWidth: Kirigami.Units.iconSizes.small
+                                        Layout.maximumHeight: Kirigami.Units.iconSizes.small
+                                        fillMode: Image.PreserveAspectFit
+                                        visible: modelData.homeLogo ? true : false
+                                    }
+                                    PlasmaComponents.Label {
+                                        text: modelData.homeTeam || "Home"
+                                        font.bold: true
+                                    }
                                 }
-                                PlasmaComponents.Label {
-                                    text: modelData.awayTeam || "Away"
+                                RowLayout {
+                                    spacing: Kirigami.Units.smallSpacing
+                                    Image {
+                                        source: modelData.awayLogo || ""
+                                        width: Kirigami.Units.iconSizes.small
+                                        height: Kirigami.Units.iconSizes.small
+                                        Layout.preferredWidth: Kirigami.Units.iconSizes.small
+                                        Layout.preferredHeight: Kirigami.Units.iconSizes.small
+                                        Layout.maximumWidth: Kirigami.Units.iconSizes.small
+                                        Layout.maximumHeight: Kirigami.Units.iconSizes.small
+                                        fillMode: Image.PreserveAspectFit
+                                        visible: modelData.awayLogo ? true : false
+                                    }
+                                    PlasmaComponents.Label {
+                                        text: modelData.awayTeam || "Away"
+                                    }
                                 }
                             }
                             
@@ -366,12 +394,24 @@ PlasmoidItem {
                     Layout.fillWidth: true
                     
                     contentItem: RowLayout {
-                        spacing: Kirigami.Units.largeSpacing
+                        spacing: Kirigami.Units.smallSpacing
                         
                         PlasmaComponents.Label {
                             text: modelData.rank || (index + 1)
                             font.bold: true
-                            Layout.preferredWidth: Kirigami.Units.gridUnit * 2
+                            Layout.preferredWidth: Kirigami.Units.gridUnit * 1.5
+                        }
+                        
+                        Image {
+                            source: modelData.logo || ""
+                            width: Kirigami.Units.iconSizes.small
+                            height: Kirigami.Units.iconSizes.small
+                            Layout.preferredWidth: Kirigami.Units.iconSizes.small
+                            Layout.preferredHeight: Kirigami.Units.iconSizes.small
+                            Layout.maximumWidth: Kirigami.Units.iconSizes.small
+                            Layout.maximumHeight: Kirigami.Units.iconSizes.small
+                            fillMode: Image.PreserveAspectFit
+                            visible: modelData.logo ? true : false
                         }
                         
                         PlasmaComponents.Label {
@@ -380,8 +420,11 @@ PlasmoidItem {
                         }
                         
                         PlasmaComponents.Label {
-                            text: (modelData.wins || 0) + "-" + (modelData.losses || 0)
+                            text: currentLeague === "nhl"
+                                ? (modelData.points || 0) + " PTS"
+                                : (modelData.wins || 0) + "-" + (modelData.losses || 0) + (currentLeague === "nhl" ? "-" + (modelData.otLosses || 0) : "")
                             font: Kirigami.Theme.smallFont
+                            // font.bold: currentLeague === "nhl" This Line causes issues
                         }
                     }
                 }

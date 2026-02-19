@@ -129,13 +129,18 @@ function parseScores(data, league) {
         var homeScore = null
         var awayScore = null
         
+        var homeLogo = null
+        var awayLogo = null
+
         for (var j = 0; j < competitors.length; j++) {
             if (competitors[j].homeAway === "home") {
                 homeTeam = competitors[j].team.shortDisplayName || competitors[j].team.displayName
                 homeScore = competitors[j].score
+                homeLogo = competitors[j].team.logo || null
             } else {
                 awayTeam = competitors[j].team.shortDisplayName || competitors[j].team.displayName
                 awayScore = competitors[j].score
+                awayLogo = competitors[j].team.logo || null
             }
         }
         
@@ -147,6 +152,8 @@ function parseScores(data, league) {
             awayTeam: awayTeam,
             homeScore: homeScore,
             awayScore: awayScore,
+            homeLogo: homeLogo,
+            awayLogo: awayLogo,
             status: status,
             isLive: isLive
         })
@@ -230,42 +237,61 @@ function parseStandings(data, league) {
         }
     }
 
-    // Sort by wins descending
+    // Sort by points (NHL) or wins descending
+    var isNHL = league === "nhl"
+
     allEntries.sort(function(a, b) {
-        var aWins = 0, bWins = 0
-        for (var i = 0; i < a.stats.length; i++) {
-            if (a.stats[i].name === "wins" || a.stats[i].abbreviation === "W") aWins = a.stats[i].value
+        if (isNHL) {
+            var aPts = 0, bPts = 0
+            for (var i = 0; i < a.stats.length; i++) {
+                if (a.stats[i].name === "points" || a.stats[i].abbreviation === "PTS" || a.stats[i].abbreviation === "P") aPts = a.stats[i].value
+            }
+            for (var i = 0; i < b.stats.length; i++) {
+                if (b.stats[i].name === "points" || b.stats[i].abbreviation === "PTS" || b.stats[i].abbreviation === "P") bPts = b.stats[i].value
+            }
+            return bPts - aPts
+        } else {
+            var aWins = 0, bWins = 0
+            for (var i = 0; i < a.stats.length; i++) {
+                if (a.stats[i].name === "wins" || a.stats[i].abbreviation === "W") aWins = a.stats[i].value
+            }
+            for (var i = 0; i < b.stats.length; i++) {
+                if (b.stats[i].name === "wins" || b.stats[i].abbreviation === "W") bWins = b.stats[i].value
+            }
+            return bWins - aWins
         }
-        for (var i = 0; i < b.stats.length; i++) {
-            if (b.stats[i].name === "wins" || b.stats[i].abbreviation === "W") bWins = b.stats[i].value
-        }
-        return bWins - aWins
     })
 
     for (var i = 0; i < allEntries.length; i++) {
         var entry = allEntries[i]
         var team = entry.team.shortDisplayName || entry.team.displayName
+        var logo = entry.team.logos && entry.team.logos.length > 0 ? entry.team.logos[0].href : null
+        if (!logo && entry.team.logo) logo = entry.team.logo
 
         var stats = entry.stats
         var wins = 0
         var losses = 0
+        var otLosses = 0
+        var points = 0
 
         for (var j = 0; j < stats.length; j++) {
-            if (stats[j].name === "wins" || stats[j].abbreviation === "W") {
-                wins = stats[j].value
-            }
-            if (stats[j].name === "losses" || stats[j].abbreviation === "L") {
-                losses = stats[j].value
-            }
+            var s = stats[j]
+            if (s.name === "wins" || s.abbreviation === "W") wins = s.value
+            if (s.name === "losses" || s.abbreviation === "L") losses = s.value
+            if (s.name === "otLosses" || s.abbreviation === "OTL" || s.abbreviation === "OT") otLosses = s.value
+            if (s.name === "points" || s.abbreviation === "PTS" || s.abbreviation === "P") points = s.value
         }
 
         teams.push({
             rank: i + 1,
             team: team,
+            logo: logo,
             wins: wins,
-            losses: losses
+            losses: losses,
+            otLosses: otLosses,
+            points: points
         })
     }
 
-    return {teams: teams}
+    return {teams: teams, league: league}
 }
