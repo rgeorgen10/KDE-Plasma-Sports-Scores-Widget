@@ -8,11 +8,11 @@
         ],
         "Category": "Utilities",
         "Description": "Display live scores, schedules, and standings for NHL, NBA, NFL, and MLB",
-        "Icon": "sports",
+        "Icon": "contents/images/logo.svg",
         "Id": "com.example.sportsscores",
         "License": "GPL-2.0+",
         "Name": "Sports Scores",
-        "Version": "2.0",
+        "Version": "2.1",
         "Website": "https://example.com"
     },
     "KPackageStructure": "Plasma/Applet",

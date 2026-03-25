@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <!-- Background circle -->
+  <circle cx="32" cy="32" r="30" fill="#1a1a2e" stroke="#4a9eff" stroke-width="2"/>
+  <!-- Scoreboard display lines -->
+  <rect x="12" y="14" width="40" height="24" rx="3" fill="#0d2137" stroke="#4a9eff" stroke-width="1.5"/>
+  <!-- Score digits placeholder bars -->
+  <rect x="15" y="18" width="16" height="7" rx="2" fill="#2a4a6e"/>
+  <rect x="33" y="18" width="16" height="7" rx="2" fill="#2a4a6e"/>
+  <!-- Colon separator dots -->
+  <circle cx="32" cy="20" r="1.5" fill="#4a9eff"/>
+  <circle cx="32" cy="24" r="1.5" fill="#4a9eff"/>
+  <!-- Bottom score numbers hint -->
+  <rect x="15" y="28" width="7" height="5" rx="1" fill="#4a9eff" opacity="0.8"/>
+  <rect x="24" y="28" width="7" height="5" rx="1" fill="#4a9eff" opacity="0.4"/>
+  <rect x="33" y="28" width="7" height="5" rx="1" fill="#ff6b35" opacity="0.8"/>
+  <rect x="42" y="28" width="7" height="5" rx="1" fill="#ff6b35" opacity="0.4"/>
+  <!-- Star/trophy icon at bottom -->
+  <polygon points="32,42 34.5,48 41,48 36,52 38,58 32,54 26,58 28,52 23,48 29.5,48" fill="#ffd700" stroke="#e6b800" stroke-width="0.5"/>
+</svg>
