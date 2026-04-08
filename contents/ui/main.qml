@@ -80,6 +80,11 @@ PlasmoidItem {
     // Cache key: league + date
     readonly property string currentKey: currentLeague + "_" + offsetDateString(dayOffset)
 
+    // Incremented after every fetch so QML re-evaluates bindings that read
+    // scoresData/scheduleData/standingsData even when currentKey hasn't changed
+    // (e.g. when the user hits the manual Refresh button on the same day).
+    property int refreshToken: 0
+
     Timer {
         id: refreshTimer
         interval: (plasmoid.configuration.refreshInterval || 60) * 1000
@@ -112,6 +117,7 @@ PlasmoidItem {
                 scoresData = updated
             }
             isLoading = false
+            refreshToken++
         })
     }
 
@@ -127,6 +133,7 @@ PlasmoidItem {
                 scheduleData = updated
             }
             isLoading = false
+            refreshToken++
         })
     }
 
@@ -141,6 +148,7 @@ PlasmoidItem {
                 standingsData = updated
             }
             isLoading = false
+            refreshToken++
         })
     }
 
@@ -340,7 +348,7 @@ PlasmoidItem {
                             spacing: Kirigami.Units.smallSpacing
 
                             Repeater {
-                                model: scoresData[currentKey] ? scoresData[currentKey].games || [] : []
+                                model: refreshToken, scoresData[currentKey] ? scoresData[currentKey].games || [] : []
 
                                 Kirigami.Card {
                                     Layout.fillWidth: true
@@ -418,7 +426,7 @@ PlasmoidItem {
                             spacing: Kirigami.Units.smallSpacing
 
                             Repeater {
-                                model: scheduleData[currentKey] ? scheduleData[currentKey].games || [] : []
+                                model: refreshToken, scheduleData[currentKey] ? scheduleData[currentKey].games || [] : []
 
                                 Kirigami.Card {
                                     Layout.fillWidth: true
