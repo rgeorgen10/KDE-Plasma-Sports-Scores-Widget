@@ -589,7 +589,7 @@ PlasmoidItem {
                     QQC2.Button {
                         icon.name: "view-refresh"
                         text: "Refresh"
-                        onClicked: refreshCurrentView()
+                        onClicked: { dayOffset = 0; refreshCurrentView() }
                     }
                 }
             }
